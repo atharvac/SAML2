@@ -331,7 +331,7 @@ namespace SAML2.Protocol
         private void DoSignOn(HttpContext context, Saml20Assertion assertion)
         {
             // User is now logged in at IDP specified in tmp
-            StateService.Set(IdpLoginSessionKey, StateService.Get<string>(IdpTempSessionKey));
+            // StateService.Set(IdpLoginSessionKey, StateService.Get<string>(IdpTempSessionKey));
             StateService.Set(IdpSessionIdKey, assertion.SessionIndex);
             StateService.Set(IdpNameIdFormat, assertion.Subject.Format);
             StateService.Set(IdpNameId, assertion.Subject.Value);
