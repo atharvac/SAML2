@@ -332,7 +332,7 @@ namespace SAML2.Protocol
         {
             // User is now logged in at IDP specified in tmp
             // StateService.Set(IdpLoginSessionKey, StateService.Get<string>(IdpTempSessionKey));
-            StateService.Set(IdpSessionIdKey, assertion.SessionIndex);
+            // StateService.Set(IdpSessionIdKey, assertion.SessionIndex);
             StateService.Set(IdpNameIdFormat, assertion.Subject.Format);
             StateService.Set(IdpNameId, assertion.Subject.Value);
 
@@ -395,10 +395,14 @@ namespace SAML2.Protocol
             }
 
             // Check expiration
-            if (assertion.IsExpired)
+            DateTime dt2 = assertion.NotOnOrAfter;
+            dt2 = dt2.AddMinutes(10.0);
+            var dt = DateTime.UtcNow.ToUniversalTime();
+            // Check expiration
+            if (dt > dt2)
             {
                 Logger.Error(ErrorMessages.AssertionExpired);
-                throw new Saml20Exception(ErrorMessages.AssertionExpired);
+                throw new Saml20Exception(ErrorMessages.AssertionExpired + " UTC " +dt+" Notoaf "+dt2);
             }
 
             // Check one time use
